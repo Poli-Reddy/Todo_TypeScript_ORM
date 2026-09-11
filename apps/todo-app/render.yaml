@@ -2,7 +2,7 @@ services:
   - type: web
     name: todo-app-backend
     env: node
-    buildCommand: npm ci && npm run build --workspaces
+    buildCommand: npm ci && npm run build --workspace=packages/orm && npm run build --workspace=apps/todo-app
     startCommand: cd apps/todo-app && node dist/server.js
     envVars:
       - key: DATABASE_URL

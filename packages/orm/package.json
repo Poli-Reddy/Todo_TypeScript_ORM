@@ -4,6 +4,9 @@
   "description": "Lightweight TypeScript ORM for serverless PostgreSQL databases",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
