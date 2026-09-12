@@ -1,76 +1,51 @@
 import { describe, it, expect } from 'vitest';
+import request from 'supertest';
+import { app } from '../src/server.js';
 
 /**
- * Todo Backend API Integration Tests
- * 
- * Note: These would require running the actual server.
- * For now, we demonstrate the test structure.
- * In production, you'd use supertest or similar to test the Express app.
+ * Todo Backend API tests.
+ *
+ * These run WITHOUT a database: they cover the health endpoint and every
+ * validation branch in routes.ts that responds before touching the DB
+ * (invalid IDs, missing titles, empty updates). Full CRUD round-trips are
+ * covered by the ORM integration tests (packages/orm, DATABASE_URL-gated)
+ * plus manual runs against a real Postgres (see DEPLOYMENT.md).
  */
-describe('Todo Backend API', () => {
-  it('should demonstrate test structure', () => {
-    // This is a placeholder showing how tests would be structured
-    // In a full implementation, you would:
-    // 1. Import the Express app
-    // 2. Use supertest to make HTTP requests
-    // 3. Verify responses and database state
-    
-    expect(true).toBe(true);
+describe('GET /health', () => {
+  it('should return ok', async () => {
+    const res = await request(app).get('/health').expect(200);
+    expect(res.body).toEqual({ status: 'ok' });
   });
 });
 
-/**
- * Example of how integration tests would look with supertest:
- * 
- * import request from 'supertest';
- * import { app } from '../src/server';
- * 
- * describe('POST /api/todos', () => {
- *   it('should create a new todo', async () => {
- *     const response = await request(app)
- *       .post('/api/todos')
- *       .send({ title: 'Test Todo', completed: false })
- *       .expect(201);
- *     
- *     expect(response.body.title).toBe('Test Todo');
- *     expect(response.body.completed).toBe(false);
- *   });
- * });
- * 
- * describe('GET /api/todos', () => {
- *   it('should list all todos', async () => {
- *     const response = await request(app)
- *       .get('/api/todos')
- *       .expect(200);
- *     
- *     expect(Array.isArray(response.body)).toBe(true);
- *   });
- *   
- *   it('should filter completed todos', async () => {
- *     const response = await request(app)
- *       .get('/api/todos?filter=completed')
- *       .expect(200);
- *     
- *     expect(response.body.every(t => t.completed === true)).toBe(true);
- *   });
- * });
- * 
- * describe('PUT /api/todos/:id', () => {
- *   it('should update a todo', async () => {
- *     const response = await request(app)
- *       .put('/api/todos/1')
- *       .send({ completed: true })
- *       .expect(200);
- *     
- *     expect(response.body.completed).toBe(true);
- *   });
- * });
- * 
- * describe('DELETE /api/todos/:id', () => {
- *   it('should delete a todo', async () => {
- *     await request(app)
- *       .delete('/api/todos/1')
- *       .expect(200);
- *   });
- * });
- */
+describe('Todo route validation (no DB required)', () => {
+  it('GET /api/todos/:id should 400 on non-numeric id', async () => {
+    const res = await request(app).get('/api/todos/abc').expect(400);
+    expect(res.body.error).toBeDefined();
+  });
+
+  it('POST /api/todos should 400 when title is missing', async () => {
+    const res = await request(app).post('/api/todos').send({}).expect(400);
+    expect(res.body.error).toMatch(/Title is required/);
+  });
+
+  it('POST /api/todos should 400 when title is blank', async () => {
+    const res = await request(app).post('/api/todos').send({ title: '   ' }).expect(400);
+    expect(res.body.error).toMatch(/Title cannot be empty/);
+  });
+
+  it('PUT /api/todos/:id should 400 on non-numeric id', async () => {
+    const res = await request(app).put('/api/todos/abc').send({ completed: true }).expect(400);
+    expect(res.body.error).toBeDefined();
+  });
+
+  it('PUT /api/todos/:id should 400 when no updates provided', async () => {
+    const res = await request(app).put('/api/todos/1').send({}).expect(400);
+    expect(res.body.error).toMatch(/No updates provided/);
+  });
+
+  it('DELETE /api/todos/:id should 400 on non-numeric id', async () => {
+    const res = await request(app).delete('/api/todos/abc').expect(400);
+    expect(res.body.error).toBeDefined();
+  });
+});

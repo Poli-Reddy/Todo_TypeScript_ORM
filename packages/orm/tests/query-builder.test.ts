@@ -167,6 +167,23 @@ describe('QueryBuilder', () => {
       expect(updateQuery.sql).not.toContain(dangerousValue);
     });
 
+    it('should reject unknown fields in WHERE clauses', () => {
+      // @ts-expect-error - testing runtime guard for invalid field
+      expect(() => qb.buildSelect({ nonexistent: true })).toThrow(/Unknown field/);
+      // @ts-expect-error - testing runtime guard for invalid field
+      expect(() => qb.buildDelete({ nope: 1 })).toThrow(/Unknown field/);
+    });
+
+    it('should refuse full-table UPDATE/DELETE and empty INSERT', () => {
+      // @ts-expect-error - testing runtime guard for empty where
+      expect(() => qb.buildUpdate({}, { title: 'x' })).toThrow(/WHERE clause/);
+      expect(() => qb.buildUpdate({ id: 1 }, {})).toThrow(/at least one field/);
+      // @ts-expect-error - testing runtime guard for empty where
+      expect(() => qb.buildDelete({})).toThrow(/WHERE clause/);
+      // @ts-expect-error - testing runtime guard for empty insert
+      expect(() => qb.buildInsert({})).toThrow(/at least one field/);
+    });
+
     it('should use parameterized queries for all operations', () => {
       const insertQuery = qb.buildInsert({ title: 'Test', completed: false });
       expect(insertQuery.sql).toMatch(/\$\d+/); // Contains $1, $2, etc.

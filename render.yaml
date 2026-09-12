@@ -1,4 +1,5 @@
 services:
+  # Backend API (Node.js + Express + custom ORM)
   - type: web
     name: todo-app-backend
     runtime: node

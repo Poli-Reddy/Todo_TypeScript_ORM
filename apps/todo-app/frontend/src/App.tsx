@@ -9,7 +9,11 @@ interface Todo {
 
 type Filter = 'all' | 'completed' | 'incomplete';
 
-const API_BASE = '/api';
+// In production (Render backend + Vercel/Netlify frontend), VITE_API_URL is set
+// to the backend URL, e.g. https://todo-app-backend-xyz.onrender.com
+// (🔧 marked as __PASTE_BACKEND_URL_HERE__ in .env.production / DEPLOYMENT.md).
+// Locally it is empty, so we fall back to the Vite dev proxy at /api.
+const API_BASE = (import.meta.env.VITE_API_URL as string | undefined || '').replace(/\/$/, '') + '/api';
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);

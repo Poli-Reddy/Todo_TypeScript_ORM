@@ -19,12 +19,17 @@ export class DatabaseClient {
 
   constructor(config: DatabaseConfig) {
     if (typeof config === 'string') {
-      // Connection string format - add SSL for production databases
-      this.pool = new Pool({ 
+      // Connection string format - add SSL for managed/cloud Postgres
+      // (Render, Neon, Supabase all require SSL).
+      const needsSSL =
+        config.includes('render.com') ||
+        config.includes('neon.tech') ||
+        config.includes('supabase.co') ||
+        config.includes('supabase.com') ||
+        config.includes('sslmode=require');
+      this.pool = new Pool({
         connectionString: config,
-        ssl: config.includes('render.com') || config.includes('neon.tech') || config.includes('supabase.com')
-          ? { rejectUnauthorized: false }
-          : undefined
+        ssl: needsSSL ? { rejectUnauthorized: false } : undefined,
       });
     } else {
       // Config object format

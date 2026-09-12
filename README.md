@@ -11,8 +11,13 @@ This project consists of two main components:
 
 ### Live Demo
 
-🚀 **Frontend**: [To be deployed]
-🔗 **Backend API**: [To be deployed]
+🚀 **Frontend**: __PASTE_FRONTEND_URL_HERE__
+🔗 **Backend API**: __PASTE_BACKEND_URL_HERE__
+
+> 🔧 Replace every `__PASTE_*_HERE__` mark in this repo with your real links after
+> deploying (search the repo for `__PASTE_` to find all 8 spots).
+> Step-by-step: see [DEPLOYMENT.md](./apps/todo-app/DEPLOYMENT.md).
+> Backend health check after deploy: `GET __PASTE_BACKEND_URL_HERE__/health` → `{"status":"ok"}`.
 
 ## ✨ Features
 
@@ -76,7 +81,7 @@ lightweight-ts-orm/
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/lightweight-ts-orm.git
+git clone __PASTE_GITHUB_REPO_URL_HERE__.git
 cd lightweight-ts-orm
 
 # Install dependencies
@@ -294,23 +299,32 @@ All generated code was reviewed, understood, and modified to meet the requiremen
 
 ### Option 1: Deploy to Render (Recommended)
 
-**Backend**:
+**Backend** (Blueprint — root `render.yaml` is the source of truth):
 1. Push code to GitHub
-2. Create a new Web Service on Render
-3. Connect your GitHub repository
-4. Configure:
-   - Build Command: `npm ci && npm run build --workspaces`
-   - Start Command: `cd apps/todo-app && node dist/server.js`
-5. Add environment variable: `DATABASE_URL` (your PostgreSQL URL from Render)
-6. Deploy!
+2. Render Dashboard → New → **Blueprint** → select this repo
+3. It creates the `todo-app-backend` web service automatically:
+   - Build Command: `npm ci && npm run build --workspace=packages/orm && npm run build --workspace=apps/todo-app`
+   - Start Command: `node apps/todo-app/dist/server.js`
+   - Health check: `/health`, Node pinned to 20.x
+4. Add environment variable: `DATABASE_URL` (Render Postgres, Neon, or Supabase URL)
+5. Create the table once: `node apps/todo-app/setup-db.js` (with `DATABASE_URL` set) or run `apps/todo-app/schema.sql`
+6. Deploy, then verify `__PASTE_BACKEND_URL_HERE__/health` → `{"status":"ok"}`
 
 **Frontend**:
-1. Build locally: `cd apps/todo-app/frontend && npm run build`
-2. Deploy `dist` folder to:
-   - Netlify: Drag & drop
+1. Set `VITE_API_URL=__PASTE_BACKEND_URL_HERE__` (`apps/todo-app/frontend/.env.production`)
+2. Build: `cd apps/todo-app/frontend && npm run build`
+3. Deploy `dist` folder to:
+   - Netlify: Drag & drop (or connect repo; update the `/api/*` redirect in `netlify.toml`)
    - Vercel: `vercel --prod`
    - Render Static Site
-3. Update `.env.production` with your backend URL
+
+Full steps: [DEPLOYMENT.md](./apps/todo-app/DEPLOYMENT.md). Detailed design: [ARCHITECTURE.md](./ARCHITECTURE.md).
+
+> **npm publish note (assignment FAQ):** the ORM is consumed as a workspace dependency
+> (`"@lightweight-ts/orm": "*"`) and is publish-ready (`prepublishOnly` build,
+> `publishConfig.access: public`, `packages/orm/README.md`). It is not yet published —
+> run `npm publish --workspace=packages/orm --access public` (requires npm auth and
+> ownership of the scope) and then pin the version in `apps/todo-app/package.json`.
 
 ### Option 2: Railway
 

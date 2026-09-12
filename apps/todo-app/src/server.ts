@@ -5,8 +5,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+export const app = express();
+const PORT = parseInt(process.env.PORT || '3000', 10);
+// Render (and most PaaS) requires binding to 0.0.0.0, not localhost.
 
 // Middleware
 app.use(cors());
@@ -26,11 +27,14 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
   res.status(500).json({ error: 'Internal server error' });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Todo API server running on port ${PORT}`);
-  console.log(`Health check: http://localhost:${PORT}/health`);
-});
+// Start server (bind 0.0.0.0 for Render).
+// Skip auto-listen under test so supertest can import the app without binding a port.
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Todo API server running on port ${PORT}`);
+    console.log(`Health check: http://localhost:${PORT}/health`);
+  });
+}
 
 // Graceful shutdown
 process.on('SIGTERM', () => {

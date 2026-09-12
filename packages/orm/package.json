@@ -16,11 +16,20 @@
   "scripts": {
     "build": "tsc",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build"
   },
   "keywords": ["orm", "typescript", "postgres", "serverless"],
   "author": "",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "__PASTE_GITHUB_REPO_URL_HERE__.git",
+    "directory": "packages/orm"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "pg": "^8.11.3"
   },
