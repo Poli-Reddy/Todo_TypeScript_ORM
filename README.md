@@ -12,12 +12,11 @@ This project consists of two main components:
 ### Live Demo
 
 🚀 **Frontend**: __PASTE_FRONTEND_URL_HERE__
-🔗 **Backend API**: __PASTE_BACKEND_URL_HERE__
+🔗 **Backend API**: https://todo-app-backend-7tm8.onrender.com
 
-> 🔧 Replace every `__PASTE_*_HERE__` mark in this repo with your real links after
-> deploying (search the repo for `__PASTE_` to find all 8 spots).
-> Step-by-step: see [DEPLOYMENT.md](./apps/todo-app/DEPLOYMENT.md).
-> Backend health check after deploy: `GET __PASTE_BACKEND_URL_HERE__/health` → `{"status":"ok"}`.
+> 🔧 Only the frontend URL is still a mark — search the repo for `__PASTE_` for
+> the remaining spots. Step-by-step: see [DEPLOYMENT.md](./apps/todo-app/DEPLOYMENT.md).
+> Backend health check: `GET https://todo-app-backend-7tm8.onrender.com/health` → `{"status":"ok"}`.
 
 ## ✨ Features
 
@@ -81,7 +80,7 @@ lightweight-ts-orm/
 
 ```bash
 # Clone the repository
-git clone __PASTE_GITHUB_REPO_URL_HERE__.git
+git clone https://github.com/Poli-Reddy/Todo_TypeScript_ORM.git
 cd lightweight-ts-orm
 
 # Install dependencies
@@ -308,10 +307,10 @@ All generated code was reviewed, understood, and modified to meet the requiremen
    - Health check: `/health`, Node pinned to 20.x
 4. Add environment variable: `DATABASE_URL` (Render Postgres, Neon, or Supabase URL)
 5. Create the table once: `node apps/todo-app/setup-db.js` (with `DATABASE_URL` set) or run `apps/todo-app/schema.sql`
-6. Deploy, then verify `__PASTE_BACKEND_URL_HERE__/health` → `{"status":"ok"}`
+6. Deploy, then verify `https://todo-app-backend-7tm8.onrender.com/health` → `{"status":"ok"}`
 
 **Frontend**:
-1. Set `VITE_API_URL=__PASTE_BACKEND_URL_HERE__` (`apps/todo-app/frontend/.env.production`)
+1. Set `VITE_API_URL=https://todo-app-backend-7tm8.onrender.com` (`apps/todo-app/frontend/.env.production`)
 2. Build: `cd apps/todo-app/frontend && npm run build`
 3. Deploy `dist` folder to:
    - Netlify: Drag & drop (or connect repo; update the `/api/*` redirect in `netlify.toml`)

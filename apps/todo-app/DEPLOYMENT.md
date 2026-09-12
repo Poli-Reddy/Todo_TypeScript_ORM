@@ -5,15 +5,13 @@ There are 3 things to deploy. Each goes to a different place:
 | # | WHAT (code) | WHERE (platform) | HOW (one line) | Result |
 |---|---|---|---|---|
 | 1 | 🗄️ **Postgres database** (`apps/todo-app/schema.sql`) | Render Postgres — or Neon / Supabase | Create DB → run `schema.sql` (or `node apps/todo-app/setup-db.js`) | A `DATABASE_URL` connection string |
-| 2 | 🖥️ **Backend API** (`apps/todo-app/src/`, served from repo root) | **Render** → Web Service (via root `render.yaml` Blueprint) | Dashboard → New → **Blueprint** → select repo → set `DATABASE_URL` → Deploy | `__PASTE_BACKEND_URL_HERE__` |
+| 2 | 🖥️ **Backend API** (`apps/todo-app/src/`, served from repo root) | **Render** → Web Service (via root `render.yaml` Blueprint) | Dashboard → New → **Blueprint** → select repo → set `DATABASE_URL` → Deploy | `https://todo-app-backend-7tm8.onrender.com` ✅ LIVE |
 | 3 | 🖼️ **Frontend UI** (`apps/todo-app/frontend/`) | **Vercel** (or Netlify / Render Static Site) | Set `VITE_API_URL` → `npm run build` → deploy `dist/` | `__PASTE_FRONTEND_URL_HERE__` |
 
-> 🔧 `__PASTE_BACKEND_URL_HERE__` = your backend URL with NO trailing slash,
-> e.g. `https://todo-app-backend-xyz.onrender.com`.
-> `__PASTE_FRONTEND_URL_HERE__` = your frontend URL,
+> ✅ Backend is live at `https://todo-app-backend-7tm8.onrender.com` (no trailing slash).
+> `__PASTE_FRONTEND_URL_HERE__` = your frontend URL once deployed,
 > e.g. `https://my-todo-app.vercel.app`.
-> After deploying, search this repo for `__PASTE_` — every spot that needs your
-> real link is marked. There are 8 spots (list at the bottom).
+> Search the repo for `__PASTE_` for the remaining spots (frontend URL only).
 
 ## Step 1 — Database (do this first, ~5 min)
 
@@ -37,13 +35,13 @@ The root `render.yaml` is the source of truth (`apps/todo-app/render.yaml` mirro
 build `npm ci` + build ORM + build backend, start `node apps/todo-app/dist/server.js`,
 health check `/health`, Node pinned to 20.x.
 
-1. Push this repo to GitHub: `__PASTE_GITHUB_REPO_URL_HERE__`.
+1. Push this repo to GitHub: `https://github.com/Poli-Reddy/Todo_TypeScript_ORM` ✅ done.
 2. Render Dashboard → New → **Blueprint** → select the repo.
    (Manual alternative: New → Web Service with the same build/start commands.)
 3. Environment → add `DATABASE_URL` = the connection string from Step 1.
    (`PORT` defaults to `3000` — leave it.)
 4. Deploy.
-5. ✅ Done when: `__PASTE_BACKEND_URL_HERE__/health` returns `{"status":"ok"}`.
+5. ✅ Done when: `https://todo-app-backend-7tm8.onrender.com/health` returns `{"status":"ok"}` ✅ verified live.
 
 ## Step 3 — Frontend UI → Vercel (~5 min)
 
@@ -51,7 +49,7 @@ The frontend must know the backend URL **at build time**:
 
 1. Edit `apps/todo-app/frontend/.env.production`:
    ```
-   VITE_API_URL=__PASTE_BACKEND_URL_HERE__
+   VITE_API_URL=https://todo-app-backend-7tm8.onrender.com
    ```
 2. Rebuild:
    ```bash
@@ -62,28 +60,22 @@ The frontend must know the backend URL **at build time**:
    - **Vercel (recommended):** `vercel --prod` (uses `vercel.json`);
      also set `VITE_API_URL` in Vercel Project → Settings → Environment Variables.
    - **Netlify:** drag-and-drop `dist/`, or connect the repo (uses `netlify.toml` —
-     its `/api/*` redirect already points at `__PASTE_BACKEND_URL_HERE__`,
-     just replace the mark); set `VITE_API_URL` in Site settings.
+     its `/api/*` redirect already points at the live backend);
+     set `VITE_API_URL` in Site settings.
    - **Render Static Site:** build command `npm run build`, publish directory `dist/`,
      set `VITE_API_URL`.
 4. ✅ Done when: `__PASTE_FRONTEND_URL_HERE__` loads and shows todos from the backend.
 
-## Step 4 — Replace all marks (~2 min)
+## Step 4 — Remaining mark: frontend URL
 
-Search the repo for `__PASTE_` and replace with your real links:
+Backend + repo marks are all filled in. Only one remains:
 
-| # | File | Mark | Replace with |
-|---|---|---|---|
-| 1 | `README.md` (Live Demo) | `__PASTE_FRONTEND_URL_HERE__` | your Vercel/Netlify URL |
-| 2 | `README.md` (Live Demo + deploy steps) | `__PASTE_BACKEND_URL_HERE__` (3×) | your Render backend URL |
-| 3 | `README.md` (Quick Start) | `__PASTE_GITHUB_REPO_URL_HERE__` | your GitHub repo URL |
-| 4 | `apps/todo-app/frontend/.env.production` | `__PASTE_BACKEND_URL_HERE__` | your Render backend URL |
-| 5 | `apps/todo-app/frontend/netlify.toml` | `__PASTE_BACKEND_URL_HERE__` | your Render backend URL |
-| 6 | `apps/todo-app/frontend/src/App.tsx` (comment) | `__PASTE_BACKEND_URL_HERE__` | — comment only, no rebuild needed |
-| 7 | `apps/todo-app/DEPLOYMENT.md` | marks in this file | — docs only |
-| 8 | `packages/orm/package.json` (`repository.url`) | `__PASTE_GITHUB_REPO_URL_HERE__` | your GitHub repo URL |
+| File | Mark | Replace with |
+|---|---|---|
+| `README.md` (Live Demo) | `__PASTE_FRONTEND_URL_HERE__` | your Vercel/Netlify URL after Step 3 |
+| `apps/todo-app/DEPLOYMENT.md` (tables above) | `__PASTE_FRONTEND_URL_HERE__` | same |
 
-Then commit + push (and redeploy frontend if you changed `.env.production` after building).
+Then commit + push.
 
 ## Env vars cheat-sheet
 
@@ -91,7 +83,7 @@ Then commit + push (and redeploy frontend if you changed `.env.production` after
 |---|---|---|
 | `DATABASE_URL` | Render backend → Environment | connection string from Step 1 |
 | `PORT` | Render backend | leave default `3000` |
-| `VITE_API_URL` | frontend `.env.production` + Vercel/Netlify env | `__PASTE_BACKEND_URL_HERE__` (no trailing slash) |
+| `VITE_API_URL` | frontend `.env.production` + Vercel/Netlify env | `https://todo-app-backend-7tm8.onrender.com` (no trailing slash) |
 
 Notes: `apps/todo-app/.env` is git-ignored — never commit it. Managed Postgres
 hosts need SSL; the ORM enables it automatically. If a DB password was ever

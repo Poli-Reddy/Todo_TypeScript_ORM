@@ -24,7 +24,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "__PASTE_GITHUB_REPO_URL_HERE__.git",
+    "url": "https://github.com/Poli-Reddy/Todo_TypeScript_ORM.git",
     "directory": "packages/orm"
   },
   "publishConfig": {
