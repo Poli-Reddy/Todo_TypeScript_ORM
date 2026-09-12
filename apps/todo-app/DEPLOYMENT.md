@@ -6,12 +6,10 @@ There are 3 things to deploy. Each goes to a different place:
 |---|---|---|---|---|
 | 1 | 🗄️ **Postgres database** (`apps/todo-app/schema.sql`) | Render Postgres — or Neon / Supabase | Create DB → run `schema.sql` (or `node apps/todo-app/setup-db.js`) | A `DATABASE_URL` connection string |
 | 2 | 🖥️ **Backend API** (`apps/todo-app/src/`, served from repo root) | **Render** → Web Service (via root `render.yaml` Blueprint) | Dashboard → New → **Blueprint** → select repo → set `DATABASE_URL` → Deploy | `https://todo-app-backend-7tm8.onrender.com` ✅ LIVE |
-| 3 | 🖼️ **Frontend UI** (`apps/todo-app/frontend/`) | **Vercel** (or Netlify / Render Static Site) | Set `VITE_API_URL` → `npm run build` → deploy `dist/` | `__PASTE_FRONTEND_URL_HERE__` |
+| 3 | 🖼️ **Frontend UI** (`apps/todo-app/frontend/`) | **Vercel** (or Netlify / Render Static Site) | Set `VITE_API_URL` → `npm run build` → deploy `dist/` | `https://todo-type-script-orm-todo-app-two.vercel.app` ✅ LIVE |
 
-> ✅ Backend is live at `https://todo-app-backend-7tm8.onrender.com` (no trailing slash).
-> `__PASTE_FRONTEND_URL_HERE__` = your frontend URL once deployed,
-> e.g. `https://my-todo-app.vercel.app`.
-> Search the repo for `__PASTE_` for the remaining spots (frontend URL only).
+> ✅ Backend is live at `https://todo-app-backend-7tm8.onrender.com`, frontend is live
+> at `https://todo-type-script-orm-todo-app-two.vercel.app`. No placeholder marks remain.
 
 ## Step 1 — Database (do this first, ~5 min)
 
@@ -64,18 +62,11 @@ The frontend must know the backend URL **at build time**:
      set `VITE_API_URL` in Site settings.
    - **Render Static Site:** build command `npm run build`, publish directory `dist/`,
      set `VITE_API_URL`.
-4. ✅ Done when: `__PASTE_FRONTEND_URL_HERE__` loads and shows todos from the backend.
+4. ✅ Done when: `https://todo-type-script-orm-todo-app-two.vercel.app` loads and shows todos from the backend ✅ verified live.
 
-## Step 4 — Remaining mark: frontend URL
+## Step 4 — Done
 
-Backend + repo marks are all filled in. Only one remains:
-
-| File | Mark | Replace with |
-|---|---|---|
-| `README.md` (Live Demo) | `__PASTE_FRONTEND_URL_HERE__` | your Vercel/Netlify URL after Step 3 |
-| `apps/todo-app/DEPLOYMENT.md` (tables above) | `__PASTE_FRONTEND_URL_HERE__` | same |
-
-Then commit + push.
+All links are filled in and pushed. No remaining placeholder marks.
 
 ## Env vars cheat-sheet
 

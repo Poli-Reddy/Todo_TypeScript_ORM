@@ -11,11 +11,10 @@ This project consists of two main components:
 
 ### Live Demo
 
-🚀 **Frontend**: __PASTE_FRONTEND_URL_HERE__
+🚀 **Frontend**: https://todo-type-script-orm-todo-app-two.vercel.app
 🔗 **Backend API**: https://todo-app-backend-7tm8.onrender.com
 
-> 🔧 Only the frontend URL is still a mark — search the repo for `__PASTE_` for
-> the remaining spots. Step-by-step: see [DEPLOYMENT.md](./apps/todo-app/DEPLOYMENT.md).
+> Step-by-step deploy guide: see [DEPLOYMENT.md](./apps/todo-app/DEPLOYMENT.md).
 > Backend health check: `GET https://todo-app-backend-7tm8.onrender.com/health` → `{"status":"ok"}`.
 
 ## ✨ Features
