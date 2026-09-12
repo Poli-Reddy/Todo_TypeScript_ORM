@@ -18,6 +18,20 @@ describe('GET /health', () => {
   });
 });
 
+describe('GET /', () => {
+  it('should return API info', async () => {
+    const res = await request(app).get('/').expect(200);
+    expect(res.body.name).toBe('Todo API');
+    expect(res.body.health).toBe('/health');
+    expect(Array.isArray(res.body.endpoints)).toBe(true);
+  });
+
+  it('should 404 unknown routes as JSON', async () => {
+    const res = await request(app).get('/nope').expect(404);
+    expect(res.body.error).toBe('Not found');
+  });
+});
+
 describe('Todo route validation (no DB required)', () => {
   it('GET /api/todos/:id should 400 on non-numeric id', async () => {
     const res = await request(app).get('/api/todos/abc').expect(400);

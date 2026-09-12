@@ -21,6 +21,28 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+// Root: API info (so GET / doesn't return "Cannot GET /")
+app.get('/', (req, res) => {
+  res.json({
+    name: 'Todo API',
+    status: 'ok',
+    health: '/health',
+    endpoints: [
+      'GET /api/todos',
+      'GET /api/todos?filter=completed|incomplete',
+      'GET /api/todos/:id',
+      'POST /api/todos',
+      'PUT /api/todos/:id',
+      'DELETE /api/todos/:id',
+    ],
+  });
+});
+
+// JSON 404 for any other unknown route
+app.use((req, res) => {
+  res.status(404).json({ error: 'Not found' });
+});
+
 // Error handling middleware
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
   console.error('Unhandled error:', err);
