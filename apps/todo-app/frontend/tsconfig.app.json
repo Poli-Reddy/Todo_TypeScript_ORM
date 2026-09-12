@@ -22,5 +22,8 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  // Test files use the backend workspace's vitest (not a frontend dep),
+  // so keep them out of the production build (fixes isolated installs like Vercel).
+  "exclude": ["src/**/*.test.*"]
 }
