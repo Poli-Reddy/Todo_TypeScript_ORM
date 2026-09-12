@@ -1,6 +1,6 @@
 {
   "name": "@lightweight-ts/orm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Lightweight TypeScript ORM for serverless PostgreSQL databases",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -19,7 +19,12 @@
     "test:watch": "vitest",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["orm", "typescript", "postgres", "serverless"],
+  "keywords": [
+    "orm",
+    "typescript",
+    "postgres",
+    "serverless"
+  ],
   "author": "",
   "license": "MIT",
   "repository": {

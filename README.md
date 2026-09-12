@@ -318,11 +318,12 @@ All generated code was reviewed, understood, and modified to meet the requiremen
 
 Full steps: [DEPLOYMENT.md](./apps/todo-app/DEPLOYMENT.md). Detailed design: [ARCHITECTURE.md](./ARCHITECTURE.md).
 
-> **npm publish note (assignment FAQ):** the ORM is consumed as a workspace dependency
-> (`"@lightweight-ts/orm": "*"`) and is publish-ready (`prepublishOnly` build,
-> `publishConfig.access: public`, `packages/orm/README.md`). It is not yet published —
-> run `npm publish --workspace=packages/orm --access public` (requires npm auth and
-> ownership of the scope) and then pin the version in `apps/todo-app/package.json`.
+> **npm package (assignment FAQ):** the ORM is published at
+> [npmjs.com/package/@lightweight-ts/orm](https://www.npmjs.com/package/@lightweight-ts/orm)
+> (`@lightweight-ts/orm@1.0.1`, `latest`). The Todo app pins it (`"^1.0.1"`, resolved to
+> the workspace during local/CI builds) — any outside project can
+> `npm install @lightweight-ts/orm` like a normal dependency. Republish with
+> `npm publish --workspace=packages/orm --access public` (requires npm auth).
 
 ### Option 2: Railway
 
